@@ -32,7 +32,7 @@ public class shareHelper {
         //CÁCH TẢI ẢNH TỪ TRONG PROJECT
         //icon là thư mục con của src
         //Logo cho ứng dụng
-        String file = "/icon/daiBang.png";      //icon là thư mục con của src
+        String file = "/icon/logo.png";      //icon là thư mục con của src
         APP_ICON = new ImageIcon(shareHelper.class.getResource(file)).getImage();
         APP_ICON1 = new ImageIcon(shareHelper.class.getResource(file));//getResource(file) Tìm 1 tài nguyên với 1 tên nhất định Trả về 1 đối tượng URL hoặc null
     }

@@ -19,7 +19,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
-import model.chuyenDe;
 import model.hocVien;
 import model.khoaHoc;
 import model.nguoiHoc;
@@ -45,7 +44,7 @@ public class hocVienJFrame extends javax.swing.JFrame {
         this.HVDao = new hocVienDao();
         this.NHDao = new nguoiHocDao();
         this.khoaHoc = kh;
-        this.lblname.setText("QUẢN LÝ HỌC VIÊN KHÓA HỌC :" + this.khoaHoc.getMaCD());
+        this.lblname.setText("QUẢN LÝ HỌC VIÊN KHÓA HỌC :" + this.khoaHoc.getMaCD()+"("+this.khoaHoc.getNgayKG()+")");
     }
 
     /**
