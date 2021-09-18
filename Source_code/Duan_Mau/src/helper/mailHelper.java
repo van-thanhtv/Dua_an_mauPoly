@@ -5,8 +5,15 @@
  */
 package helper;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Properties;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -20,14 +27,55 @@ import javax.swing.JTextField;
  * @author Tran Van Thanh
  */
 public class mailHelper {
+
+    private static String url = "src\\resources/data.txt";
+    // Đọc dữ liệu từ File với BufferedReader
+    private static FileInputStream fileInputStream = null;
+    private static BufferedReader bufferedReader = null;
+    private static String user = "";
+    private static String pass = "";
     private static int randumCode;
-    public static int sendcode(JTextField txt){
+
+    public static int sendcode(JTextField txt) {
+        try {
+            fileInputStream = new FileInputStream(url);
+            bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+            String line = bufferedReader.readLine();
+            int i = 0;
+            while (line != null) {
+                if (i==0) {
+                    user=line.substring(line.indexOf(':')+1);
+                }
+                if (i==1) {
+                    pass =line.substring(line.indexOf(':')+1);
+                }
+//                System.out.println(line+":"+i);
+                i++;
+                line = bufferedReader.readLine();
+            }
+            System.out.println(user);
+            System.out.println(pass);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(mailHelper.class.getName())
+                            .log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(mailHelper.class.getName())
+                            .log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                bufferedReader.close();
+                fileInputStream.close();
+            } catch (IOException ex) {
+                Logger.getLogger(mailHelper.class.getName())
+                                .log(Level.SEVERE, null, ex);
+            }
+        }
         try {
             Random random = new Random();
             randumCode = random.nextInt(999999);//tạo 1 số ngẫu nhiên từ 0 đến 999999            
             String host = "smtp.gmail.com";
-            String user = "vanthanh10012k@gmail.com";
-            String pass = "thanhk52a2";
+            String user = mailHelper.user;
+            String pass = mailHelper.pass;
             String to = txt.getText();
             String subject = "Reseting Code";
             String message = "Your reset code is " + randumCode;
@@ -59,12 +107,12 @@ public class mailHelper {
             msg.setText(message);//Nội dung thư
 //            Transport.send(msg);
             Transport transport = mailSession.getTransport("smtp");
-            transport.connect(host,user,pass);
+            transport.connect(host, user, pass);
             transport.sendMessage(msg, msg.getAllRecipients());
-            transport.close();            
+            transport.close();
         } catch (Exception e) {
             e.printStackTrace();
-            dialogHelper.alert(null,"Tài khoản gmail không hoạt động");
+            dialogHelper.alert(null, "Tài khoản gmail không hoạt động");
         }
         return randumCode;
     }
