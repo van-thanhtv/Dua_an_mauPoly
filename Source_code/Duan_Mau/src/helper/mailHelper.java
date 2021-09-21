@@ -78,7 +78,7 @@ public class mailHelper {
             String pass = mailHelper.pass;
             String to = txt.getText();
             String subject = "Reseting Code";
-            String message = "Your reset code is " + randumCode;
+            String message = "Your confirmation code is " + randumCode;
             boolean sessionDebug = false;
             //!.Tạo 1 dối tượng Properties
             Properties pros = new Properties();
@@ -89,7 +89,6 @@ public class mailHelper {
             pros.put("mail.smtp.starttls.required", "true");
             pros.put("mail.smtp.ssl.trust", "smtp.gmail.com");
             java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-
             Session mailSession = Session.getInstance(pros,
                     new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
@@ -113,6 +112,7 @@ public class mailHelper {
         } catch (Exception e) {
             e.printStackTrace();
             dialogHelper.alert(null, "Tài khoản gmail không hoạt động");
+            return 0;
         }
         return randumCode;
     }

@@ -16,23 +16,26 @@ import model.nhanVien;
  * @author Tran Van Thanh
  */
 public class sendCodeJDialog extends javax.swing.JDialog {
+
     private nhanVien nhanVien;
+
     /**
      * Creates new form sendCodeJDialog
      */
-    public sendCodeJDialog(java.awt.Frame parent, boolean modal,nhanVien nv) {
+    public sendCodeJDialog(java.awt.Frame parent, boolean modal, nhanVien nv) {
         super(parent, modal);
-        initComponents();        
+        initComponents();
         setLocationRelativeTo(null);
-        this.nhanVien=nv;
+        this.nhanVien = nv;
         macDinh();
     }
-    private void macDinh(){
+
+    private void macDinh() {
         this.txtEmail.setEditable(false);
-        if (nhanVien==null) {
+        if (nhanVien == null) {
             this.txtmaNV.setText("");
             this.txtEmail.setText("");
-        }else{
+        } else {
             this.txtEmail.setText(nhanVien.getGmail());
             this.txtmaNV.setText(nhanVien.getMaNV());
         }
@@ -142,26 +145,28 @@ public class sendCodeJDialog extends javax.swing.JDialog {
 
     private void btnSendCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendCodeActionPerformed
         // TODO add your handling code here:
-         int macode=mailHelper.sendcode(txtEmail);
-                    System.out.println(""+macode);
-                    dialogHelper.alert(this,"Code has been send to the email");
-                    String ma =dialogHelper.prompt(this,"Nhập vào mã Code (6 số)");
-                    if (macode==Integer.parseInt(ma)) {
-                        this.dispose();
-                        new resetMKJDialog(null, rootPaneCheckingEnabled,this.nhanVien).setVisible(true);
-                    }else{
-                        dialogHelper.alert(this, ma +" không khớp");
-                    } 
+        int macode = mailHelper.sendcode(txtEmail);
+        if (macode != 0) {//Check lỗi Email thiết lập không
+            System.out.println("" + macode);
+            dialogHelper.alert(this, "Code has been send to the email");
+            String ma = dialogHelper.prompt(this, "Nhập vào mã Code (6 số)");
+            if (macode == Integer.parseInt(ma)) {
+                this.dispose();
+                new resetMKJDialog(null, rootPaneCheckingEnabled, this.nhanVien).setVisible(true);
+            } else {
+                dialogHelper.alert(this, ma + " không khớp");
+            }
+        }
     }//GEN-LAST:event_btnSendCodeActionPerformed
 
     private void txtmaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtmaNVActionPerformed
         // TODO add your handling code here:
         nhanVienInterface dao = new nhanVienDao();
-        this.nhanVien = dao.findById(this.txtmaNV.getText());        
-        if (nhanVien!=null) {
+        this.nhanVien = dao.findById(this.txtmaNV.getText());
+        if (nhanVien != null) {
             this.txtEmail.setText(nhanVien.getGmail());
-        }else{
-            dialogHelper.alert(this,"Không tìm thấy mã nhân viên :"+this.txtmaNV.getText()+" trong CSDL");
+        } else {
+            dialogHelper.alert(this, "Không tìm thấy mã nhân viên :" + this.txtmaNV.getText() + " trong CSDL");
         }
     }//GEN-LAST:event_txtmaNVActionPerformed
 

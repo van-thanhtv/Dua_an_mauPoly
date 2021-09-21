@@ -235,7 +235,7 @@ public class dangKyaccountJDialog extends javax.swing.JDialog {
         model.setGmail(txtEmail.getText());
         return model;
     }
-    
+
     //lấy thông tin trên form để
     //thêm (đăng kí) nhân viên - trưởng phòng vào CSDL
     private void insert() {
@@ -267,17 +267,19 @@ public class dangKyaccountJDialog extends javax.swing.JDialog {
                     && utilityHelper.checkName(txthoTen)
                     && utilityHelper.checkEmail(txtEmail)) {
                 if (checkTrungMa(txtmaNV)) {
-                    dialogHelper.alert(this,"Xác nhận Email");
-                    int macode=mailHelper.sendcode(txtEmail);
-                    System.out.println(""+macode);
-                    dialogHelper.alert(this,"Code has been send to the email");
-                    String ma =dialogHelper.prompt(this,"Nhập vào mã Code (6 số)");
-                    if (macode==Integer.parseInt(ma)) {
-                        insert();
-                        this.dispose();
-                    }else{
-                        dialogHelper.alert(this, ma +" không khớp");
-                    }                    
+                    dialogHelper.alert(this, "Xác nhận Email");
+                    int macode = mailHelper.sendcode(txtEmail);
+                    if (macode != 0) {//Check lỗi Email thiết lập không
+                        System.out.println("" + macode);
+                        dialogHelper.alert(this, "Code has been send to the email");
+                        String ma = dialogHelper.prompt(this, "Nhập vào mã Code (6 số)");
+                        if (macode == Integer.parseInt(ma)) {
+                            insert();
+                            this.dispose();
+                        } else {
+                            dialogHelper.alert(this, ma + " không khớp");
+                        }
+                    }
                 }
             }
         }
