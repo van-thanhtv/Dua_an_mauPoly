@@ -101,7 +101,7 @@ public class mainFrom extends javax.swing.JFrame {
         lblFacebook = new javax.swing.JLabel();
         lblDongHo = new javax.swing.JLabel();
         lblUser = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         MenutemDangNhap = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -265,7 +265,7 @@ public class mainFrom extends javax.swing.JFrame {
         lblDongHo.setText("10:55 PM");
 
         lblUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Users.png"))); // NOI18N
-        lblUser.setText("jLabel2");
+        lblUser.setText("Người Dùng");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -277,7 +277,7 @@ public class mainFrom extends javax.swing.JFrame {
                 .addComponent(lblFacebook, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(lblUser)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 373, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 346, Short.MAX_VALUE)
                 .addComponent(lblDongHo))
         );
         jPanel1Layout.setVerticalGroup(
@@ -340,7 +340,7 @@ public class mainFrom extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar.add(jMenu1);
 
         jMenu2.setText("Quản lý");
         jMenu2.setMargin(new java.awt.Insets(5, 5, 5, 5));
@@ -389,7 +389,7 @@ public class mainFrom extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem8);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar.add(jMenu2);
 
         jMenu4.setText("Thống kê");
         jMenu4.setMargin(new java.awt.Insets(5, 5, 5, 5));
@@ -440,7 +440,7 @@ public class mainFrom extends javax.swing.JFrame {
         });
         jMenu4.add(jMenuItem12);
 
-        jMenuBar1.add(jMenu4);
+        jMenuBar.add(jMenu4);
 
         jMenu6.setText("Trợ giúp");
         jMenu6.setMargin(new java.awt.Insets(5, 5, 5, 5));
@@ -468,9 +468,9 @@ public class mainFrom extends javax.swing.JFrame {
         });
         jMenu6.add(jMenuItem14);
 
-        jMenuBar1.add(jMenu6);
+        jMenuBar.add(jMenu6);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(jMenuBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -641,7 +641,7 @@ public class mainFrom extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
