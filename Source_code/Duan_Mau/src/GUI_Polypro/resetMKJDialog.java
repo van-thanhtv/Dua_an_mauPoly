@@ -50,6 +50,7 @@ public class resetMKJDialog extends javax.swing.JDialog {
         btnReset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Hện Thống Đặt Lại Mặt Khẩu");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

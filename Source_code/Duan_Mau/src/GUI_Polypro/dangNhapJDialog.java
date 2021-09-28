@@ -255,8 +255,8 @@ public class dangNhapJDialog extends javax.swing.JDialog {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
-        if (dialogHelper.confirm(this, "Bạn có muốn thoát khỏi ứng dụng không?")) {
-            System.exit(0);
+        if (dialogHelper.confirm(this, "Bạn có muốn đóng cửa sổ không ?")) {
+            this.dispose();
         }
     }//GEN-LAST:event_btnCancelActionPerformed
 
