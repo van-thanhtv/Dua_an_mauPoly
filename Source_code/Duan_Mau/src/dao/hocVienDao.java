@@ -5,6 +5,7 @@
  */
 package dao;
 
+import Interface.eduSysDao;
 import Interface.hocVienInterface;
 import helper.jdbcHelper;
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ import model.hocVien;
  *
  * @author Tran Van Thanh
  */
-public class hocVienDao implements hocVienInterface {
+public class hocVienDao extends eduSysDao<hocVien, String>implements hocVienInterface {
 
     //Các câu lệnh SQL
     private final String sqlINSERT = "INSERT INTO HocVien(MaKH, MaNH, Diem) VALUES(?, ?, ?)";
@@ -101,4 +102,32 @@ public class hocVienDao implements hocVienInterface {
         return select(sqlSELECT1,maHV).size()>0?select(sqlSELECT1,maHV).get(0):null;
     }
 
+    @Override
+    public ArrayList<hocVien> selectAll() {
+        return selectBySql(sqlSELECT);
+    }
+
+    @Override
+    public hocVien selectByid(String id) {
+        return selectBySql(sqlSELECT1, id).size()>0?selectBySql(sqlSELECT1, id).get(0):null;
+    }
+
+    @Override
+    protected ArrayList<hocVien> selectBySql(String sql, Object... args) {
+        ArrayList<hocVien> listHV = new ArrayList<>();
+        try {
+            ResultSet rs = null;
+            try {
+                rs = jdbcHelper.executeQuery(sql, args);
+                while (rs.next()) {
+                    listHV.add(readFromResultSet(rs));
+                }
+            } finally {
+                rs.getStatement().getConnection().close();      //đóng kết nối từ resultSet
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException();
+        }
+        return listHV;
+    }
 }

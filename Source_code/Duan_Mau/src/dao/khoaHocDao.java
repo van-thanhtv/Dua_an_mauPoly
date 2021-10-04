@@ -5,6 +5,7 @@
  */
 package dao;
 
+import Interface.eduSysDao;
 import Interface.khoaHocInterface;
 import helper.jdbcHelper;
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ import model.khoaHoc;
  *
  * @author Tran Van Thanh
  */
-public class khoaHocDao implements khoaHocInterface{
+public class khoaHocDao extends eduSysDao<khoaHoc, String>implements khoaHocInterface{
     //đọc 1 đối tượng khoa học từ 1 bản ghi (1 ResultSet)
     //Trả về 1 đối tượng khóa học
     private khoaHoc readFromResultSet(ResultSet rs) throws SQLException{
@@ -105,6 +106,37 @@ public class khoaHocDao implements khoaHocInterface{
     public khoaHoc findById(String maKH) {
         String sql="SELECT * FROM KhoaHoc WHERE MaKH=?";
         return this.select(sql, maKH).size()>0 ? this.select(sql, maKH).get(0) : null;
+    }
+
+    @Override
+    public ArrayList<khoaHoc> selectAll() {
+        String sql="SELECT * FROM KhoaHoc";
+        return selectBySql(sql);
+    }
+
+    @Override
+    public khoaHoc selectByid(String id) {
+        String sql="SELECT * FROM KhoaHoc WHERE MaKH=?";
+        return selectBySql(sql, id).size()>0?selectBySql(sql, id).get(0):null;
+    }
+
+    @Override
+    protected ArrayList<khoaHoc> selectBySql(String sql, Object... args) {
+        ArrayList<khoaHoc> listKH = new ArrayList<>();
+        try {
+            ResultSet rs = null;
+            try{
+                rs=jdbcHelper.executeQuery(sql, args);
+                while (rs.next()) {                    
+                    listKH.add(readFromResultSet(rs));
+                }
+            }finally{
+                rs.getStatement().getConnection().close();//Đóng kết nối
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listKH;
     }
     
 }

@@ -82,11 +82,6 @@ public class dangNhapJDialog extends javax.swing.JDialog {
         jLabel3.setText("Mật khẩu");
 
         txtMatKhau.setText("12345");
-        txtMatKhau.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMatKhauActionPerformed(evt);
-            }
-        });
         txtMatKhau.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtMatKhauKeyTyped(evt);
@@ -228,14 +223,6 @@ public class dangNhapJDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaNVActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMaNVActionPerformed
-
-    private void txtMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatKhauActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMatKhauActionPerformed
-
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         txtMaNV.setBackground(Color.white);
@@ -319,6 +306,10 @@ public class dangNhapJDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         new dangKyaccountJDialog(null, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_lblNoaccountMouseClicked
+
+    private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaNVActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMaNVActionPerformed
 
     /**
      * @param args the command line arguments

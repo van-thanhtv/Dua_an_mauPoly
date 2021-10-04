@@ -81,4 +81,17 @@ public class jdbcHelper {
             throw new RuntimeException(e);         //throw các lỗi khi chạy CT, VD không có return khi try bị lỗi Thay thế retun null ở cuối
         }        
     }
+    //TRUY VẤN 1 GIÁ TRỊ
+    public static Object value(String sql,Object...args){
+        try {
+            ResultSet rs = jdbcHelper.executeQuery(sql, args);
+            if (rs.next()) {
+                return rs.getObject(0);
+            }
+            rs.getStatement().getConnection().close();
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
 }

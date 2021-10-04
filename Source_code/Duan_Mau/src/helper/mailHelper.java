@@ -43,11 +43,11 @@ public class mailHelper {
             String line = bufferedReader.readLine();
             int i = 0;
             while (line != null) {
-                if (i==0) {
-                    user=line.substring(line.indexOf(':')+1);
+                if (i == 0) {
+                    user = line.substring(line.indexOf(':') + 1);
                 }
-                if (i==1) {
-                    pass =line.substring(line.indexOf(':')+1);
+                if (i == 1) {
+                    pass = line.substring(line.indexOf(':') + 1);
                 }
 //                System.out.println(line+":"+i);
                 i++;
@@ -57,17 +57,17 @@ public class mailHelper {
             System.out.println(pass);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(mailHelper.class.getName())
-                            .log(Level.SEVERE, null, ex);
+                    .log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(mailHelper.class.getName())
-                            .log(Level.SEVERE, null, ex);
+                    .log(Level.SEVERE, null, ex);
         } finally {
             try {
                 bufferedReader.close();
                 fileInputStream.close();
             } catch (IOException ex) {
                 Logger.getLogger(mailHelper.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                        .log(Level.SEVERE, null, ex);
             }
         }
         try {
@@ -92,7 +92,7 @@ public class mailHelper {
             Session mailSession = Session.getInstance(pros,
                     new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(user,pass);//Tài khoản Gmail của bạn và pass
+                    return new PasswordAuthentication(user, pass);//Tài khoản Gmail của bạn và pass
                 }
             }
             );

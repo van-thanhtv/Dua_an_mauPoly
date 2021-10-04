@@ -703,6 +703,9 @@ public class mainFrom extends javax.swing.JFrame {
         } else {
             this.lblUser.setText("Chưa đăng nhập!");
         }
+        for (JInternalFrame frmChild : jdesktop.getAllFrames()) {//lấy các Jdesktop và đóng các cửa sổ
+            frmChild.dispose();
+        }
         this.openLogin();
     }
 
@@ -720,7 +723,6 @@ public class mainFrom extends javax.swing.JFrame {
             dialogHelper.alert(this, "Vui lòng đăng nhập!");
         }
     }
-
     //Dùng để mở JInternalFrame
     private void openX(JInternalFrame x) {
         for (JInternalFrame frmChild : jdesktop.getAllFrames()) {
