@@ -9,10 +9,16 @@ import Interface.khoaHocInterface;
 import Interface.thongKeInterface;
 import dao.khoaHocDao;
 import dao.thongKeDao;
+import helper.ExportFileHelper;
+import helper.dialogHelper;
 import helper.shareHelper;
 import java.awt.CardLayout;
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.khoaHoc;
 
@@ -21,8 +27,10 @@ import model.khoaHoc;
  * @author Tran Van Thanh
  */
 public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
+
     private thongKeInterface TKDao;
     private khoaHocInterface KHDao;
+
     /**
      * Creates new form QLthong_ke_JInternalFrame
      */
@@ -77,6 +85,7 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
         pnlNhanVien = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        btn_export = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -106,6 +115,15 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("TỔNG HỢP THỐNG KÊ");
 
+        pnlNguoiHoc.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                pnlNguoiHocAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         pnlNguoiHoc.setLayout(new java.awt.BorderLayout());
 
         tblNguoiHoc.setModel(new javax.swing.table.DefaultTableModel(
@@ -134,6 +152,15 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
 
         tabs.addTab("NGƯỜI HỌC", new javax.swing.ImageIcon(getClass().getResource("/icon/User group.png")), pnlNguoiHoc, "NGƯỜI HỌC"); // NOI18N
 
+        pnlBangDiem.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                pnlBangDiemAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         pnlBangDiem.setLayout(new java.awt.BorderLayout());
 
         tblBangDiem.setModel(new javax.swing.table.DefaultTableModel(
@@ -166,19 +193,9 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
         jLabel2.setText("KHÓA HỌC: ");
         jPanel2.add(jLabel2, java.awt.BorderLayout.LINE_START);
 
-        cboKhoaHoc.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cboKhoaHocItemStateChanged(evt);
-            }
-        });
         cboKhoaHoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboKhoaHocActionPerformed(evt);
-            }
-        });
-        cboKhoaHoc.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                cboKhoaHocPropertyChange(evt);
             }
         });
         jPanel2.add(cboKhoaHoc, java.awt.BorderLayout.CENTER);
@@ -187,6 +204,15 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
 
         tabs.addTab("BẢNG ĐIỂM", new javax.swing.ImageIcon(getClass().getResource("/icon/Numbered list.png")), pnlBangDiem, "BẢNG ĐIỂM"); // NOI18N
 
+        pnlKhoaHoc.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                pnlKhoaHocAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         pnlKhoaHoc.setLayout(new java.awt.BorderLayout());
 
         tblKhoaHoc.setModel(new javax.swing.table.DefaultTableModel(
@@ -225,19 +251,9 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
         jLabel3.setText("NĂM: ");
         jPanel1.add(jLabel3, java.awt.BorderLayout.LINE_START);
 
-        cboNam.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cboNamItemStateChanged(evt);
-            }
-        });
         cboNam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboNamActionPerformed(evt);
-            }
-        });
-        cboNam.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                cboNamPropertyChange(evt);
             }
         });
         jPanel1.add(cboNam, java.awt.BorderLayout.CENTER);
@@ -264,12 +280,23 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
             }
         });
         tblDoanhThu.setRowHeight(25);
+        tblDoanhThu.setRowMargin(0);
+        tblDoanhThu.setShowVerticalLines(false);
         jScrollPane4.setViewportView(tblDoanhThu);
 
         pnlTruongPhong.add(jScrollPane4, java.awt.BorderLayout.CENTER);
 
         pnlDoanhThu.add(pnlTruongPhong, "card1");
 
+        pnlNhanVien.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                pnlNhanVienAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         pnlNhanVien.setLayout(new java.awt.BorderLayout());
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -288,55 +315,58 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
 
         tabs.addTab("DOANH THU", new javax.swing.ImageIcon(getClass().getResource("/icon/Coins.png")), pnlDoanhThu, "DOANH THU"); // NOI18N
 
+        btn_export.setBackground(new java.awt.Color(24, 98, 151));
+        btn_export.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btn_export.setForeground(new java.awt.Color(255, 255, 255));
+        btn_export.setText("Xuất EXCEL");
+        btn_export.setBorder(null);
+        btn_export.setBorderPainted(false);
+        btn_export.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btn_export.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_exportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(tabs)
+            .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_export, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
+                .addComponent(btn_export, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cboKhoaHocItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboKhoaHocItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboKhoaHocItemStateChanged
-
     private void cboKhoaHocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboKhoaHocActionPerformed
         // TODO add your handling code here:
         fillTableBangDiem();                     //ActionPerformed
     }//GEN-LAST:event_cboKhoaHocActionPerformed
 
-    private void cboKhoaHocPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_cboKhoaHocPropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboKhoaHocPropertyChange
-
-    private void cboNamItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboNamItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboNamItemStateChanged
-
     private void cboNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNamActionPerformed
         // TODO add your handling code here:
         fillTableDoanhThu();                   //ActionPerformed
     }//GEN-LAST:event_cboNamActionPerformed
-
-    private void cboNamPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_cboNamPropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboNamPropertyChange
     /*
     khi mở JInternalFrame:
     điền dữ liệu vào cboKhoaHoc và cboNam
     điền dữ liệu vào các bảng
-    */
+     */
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         // TODO add your handling code here:
         fillComboBoxkhoaHoc();
@@ -344,11 +374,94 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
         fillTableNguoiHoc();
         fillTablekhoaHoc();
         fillComboBoxNam();
-        fillTableDoanhThu();        
+        fillTableDoanhThu();
     }//GEN-LAST:event_formInternalFrameOpened
+
+    private void btn_exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exportActionPerformed
+        try {
+            JFileChooser chonChoLuu = new JFileChooser();
+            //chonChoLuu.setCurrentDirectory(new File(System.getProperty("user.dir")));
+            chonChoLuu.setSelectedFile(new File("unname.xlsx"));
+            int reponse = chonChoLuu.showSaveDialog(null);
+            if (reponse == JFileChooser.APPROVE_OPTION) {
+                String savePath = chonChoLuu.getSelectedFile().getAbsolutePath();
+                if (chonChoLuu.getSelectedFile().getName().length() > 5) {
+                    if (!savePath.substring(savePath.length() - 5).equals(".xlsx")) {
+                        savePath = savePath + ".xlsx";
+                    }
+                } else {
+                    savePath = savePath + ".xlsx";
+                }
+                if (new File(savePath).exists()) {
+                    if (dialogHelper.confirm(this, "Đã tồn tại file này, bạn có muốn ghi đè?")) {
+                        switch (this.tabs.getSelectedIndex()) {
+                            case 0:
+                                ExportFileHelper.writeToExcell(this.tblNguoiHoc, Paths.get(savePath));
+                                dialogHelper.alert(this, "Xuất File thành công !");
+                                break;
+                            case 1:
+                                ExportFileHelper.writeToExcell(this.tblBangDiem, Paths.get(savePath));
+                                dialogHelper.alert(this, "Xuất File thành công !");
+                                break;
+                            case 2:
+                                ExportFileHelper.writeToExcell(this.tblKhoaHoc, Paths.get(savePath));
+                                dialogHelper.alert(this, "Xuất File thành công !");
+                                break;
+                            case 3:
+                                ExportFileHelper.writeToExcell(this.tblDoanhThu, Paths.get(savePath));
+                                dialogHelper.alert(this, "Xuất File thành công !");
+                                break;
+                        }
+                    }
+                } else {
+                    switch (this.tabs.getSelectedIndex()) {
+                        case 0:
+                            ExportFileHelper.writeToExcell(this.tblNguoiHoc, Paths.get(savePath));
+                            dialogHelper.alert(this, "Xuất File thành công !");
+                            break;
+                        case 1:
+                            ExportFileHelper.writeToExcell(this.tblBangDiem, Paths.get(savePath));
+                            dialogHelper.alert(this, "Xuất File thành công !");
+                            break;
+                        case 2:
+                            ExportFileHelper.writeToExcell(this.tblKhoaHoc, Paths.get(savePath));
+                            dialogHelper.alert(this, "Xuất File thành công !");
+                            break;
+                        case 3:
+                            ExportFileHelper.writeToExcell(this.tblDoanhThu, Paths.get(savePath));
+                            dialogHelper.alert(this, "Xuất File thành công !");
+                            break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Xuất file thất bại!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btn_exportActionPerformed
+
+    private void pnlNhanVienAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_pnlNhanVienAncestorAdded
+        // TODO add your handling code here:
+        this.btn_export.setVisible(false);
+    }//GEN-LAST:event_pnlNhanVienAncestorAdded
+
+    private void pnlNguoiHocAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_pnlNguoiHocAncestorAdded
+        // TODO add your handling code here:
+        this.btn_export.setVisible(true);
+    }//GEN-LAST:event_pnlNguoiHocAncestorAdded
+
+    private void pnlBangDiemAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_pnlBangDiemAncestorAdded
+        // TODO add your handling code here:
+        this.btn_export.setVisible(true);
+    }//GEN-LAST:event_pnlBangDiemAncestorAdded
+
+    private void pnlKhoaHocAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_pnlKhoaHocAncestorAdded
+        // TODO add your handling code here:
+        this.btn_export.setVisible(true);
+    }//GEN-LAST:event_pnlKhoaHocAncestorAdded
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_export;
     private javax.swing.JComboBox<String> cboKhoaHoc;
     private javax.swing.JComboBox<String> cboNam;
     private javax.swing.JLabel jLabel1;
@@ -376,14 +489,15 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
     //xóa bảng điểm, điền dữ liệu vào bảng điểm theo MaKH
     private void fillTableBangDiem() {
-        khoaHoc kh = (khoaHoc)this.cboKhoaHoc.getSelectedItem();
+        khoaHoc kh = (khoaHoc) this.cboKhoaHoc.getSelectedItem();
         DefaultTableModel model = (DefaultTableModel) tblBangDiem.getModel();
         model.setRowCount(0);
         ArrayList<Object[]> list = this.TKDao.getBangDiem(kh.getMaKH());
         for (Object[] row : list) {
             model.addRow(row);
-        }  
+        }
     }
+
     //xóa bảng doanh thu, điền dữ liệu vào bảng doanh thu theo năm tương ứng
     private void fillTableDoanhThu() {
         int nam = Integer.parseInt(cboNam.getSelectedItem().toString());
@@ -392,8 +506,9 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
         ArrayList<Object[]> list = this.TKDao.getDoanhThu(nam);//lấy doanh thu theo năm
         for (Object[] row : list) {
             model.addRow(row);
-        }  
+        }
     }
+
     //xóa cbo, lấy tất cả đt khoaHoc từ CSDL thêm mới vào cbo
     //chọn sẵn Item thứ nhất
     private void fillComboBoxkhoaHoc() {
@@ -403,8 +518,9 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
         for (khoaHoc kh : list) {
             model.addElement(kh);
         }
-        cboKhoaHoc.setSelectedIndex(0);        
+        cboKhoaHoc.setSelectedIndex(0);
     }
+
     //xóa bảng người học, đièm dữ liệu vào bảng người học
     private void fillTableNguoiHoc() {
         DefaultTableModel model = (DefaultTableModel) tblNguoiHoc.getModel();
@@ -412,8 +528,9 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
         ArrayList<Object[]> list = this.TKDao.getNguoHoc();
         for (Object[] row : list) {
             model.addRow(row);
-        }        
+        }
     }
+
     //xóa bảng tổng hợp điểm, điền dữ liệu vào bảng tổng hợp điểm
     private void fillTablekhoaHoc() {
         DefaultTableModel model = (DefaultTableModel) tblKhoaHoc.getModel();
@@ -421,8 +538,9 @@ public class QLthong_ke_JInternalFrame extends javax.swing.JInternalFrame {
         ArrayList<Object[]> list = this.TKDao.getDiemTheoChuyenDe();
         for (Object[] row : list) {
             model.addRow(row);
-        }           
+        }
     }
+
     //lấy tất cả năm của khóa học (int) điền vào cbo (điền đt int), ko điền trùng
     //chọn sẵn Item thứ nhất
     private void fillComboBoxNam() {

@@ -723,6 +723,7 @@ public class mainFrom extends javax.swing.JFrame {
             dialogHelper.alert(this, "Vui lòng đăng nhập!");
         }
     }
+
     //Dùng để mở JInternalFrame
     private void openX(JInternalFrame x) {
         for (JInternalFrame frmChild : jdesktop.getAllFrames()) {
@@ -736,12 +737,21 @@ public class mainFrom extends javax.swing.JFrame {
 
     //Mở đến trang web trợ giúp
     private void openWebsite() {
-        try {
-            Desktop.getDesktop().browse(new File("help/index.html").toURI());
-            //thư mục help đặt ngang hàng với src
-        } catch (IOException ex) {
-            dialogHelper.alert(this, "Không tìm thấy file hướng dẫn!");
+        if (Desktop.isDesktopSupported()) {//Kiểm tra xem lớp này có được hỗ trợ hay ko
+            try {
+                File myFile = new File("help/Hệ thống quản lý đào tạo.pdf");
+                Desktop.getDesktop().open(myFile);
+            } catch (IOException ex) {
+                // no application registered for PDFs
+                dialogHelper.alert(this, "Không tìm thấy file hướng dẫn!");
+            }
         }
+//        try {
+//            Desktop.getDesktop().browse(new File("help/Hệ thống quản lý đào tạo.pdf").toURI());
+//            //thư mục help đặt ngang hàng với src
+//        } catch (IOException ex) {
+//            dialogHelper.alert(this, "Không tìm thấy file hướng dẫn!");
+//        }
     }
 
     //Mở JInternalFrame chuyên đề

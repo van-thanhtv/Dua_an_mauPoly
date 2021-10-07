@@ -7,8 +7,6 @@ package helper;
 
 import static java.awt.Color.pink;
 import static java.awt.Color.white;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -193,15 +191,18 @@ public class utilityHelper {
             return false;
         }
     }
-    public static boolean checkDiem(JTextField txt) {//Check điểm nằm trong khoảng 0-10 nếu là -1 thì là chưa nhập
+    public static boolean checkDiem(JTextField txt) {//Check điểm nằm trong khoảng 0-10 nếu là để trống thì là chưa nhập
         txt.setBackground(white);
+        if (txt.getText().equals("")) {
+            return true;
+        }else
         try {
             float hp = Float.parseFloat(txt.getText());
-            if ((hp >= 0 && hp <= 10)||hp==-1) {
+            if ((hp >= 0 && hp <= 10)||txt.getText().equals("")) {
                 return true;
             } else {
                 txt.setBackground(pink);
-                dialogHelper.alert(txt.getRootPane(), txt.getName() + " phải là trong khoảng 0-10 hoặc chưa nhập (-1).");
+                dialogHelper.alert(txt.getRootPane(), txt.getName() + " phải là trong khoảng 0-10 hoặc chưa nhập.");
                 return false;
             }
         } catch (NumberFormatException e) {

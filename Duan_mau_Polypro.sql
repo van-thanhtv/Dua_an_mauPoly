@@ -166,7 +166,7 @@ CREATE TABLE [dbo].[HocVien](
 	[MaHV] [int] IDENTITY(1,1) NOT NULL,
 	[MaKH] [int] NOT NULL,
 	[MaNH] [nchar](7) NOT NULL,
-	[Diem] [float] NOT NULL,
+	[Diem] [float] DEFAULT -1 ,
  CONSTRAINT [PK_HocVien] PRIMARY KEY CLUSTERED 
 (
 	[MaHV] ASC

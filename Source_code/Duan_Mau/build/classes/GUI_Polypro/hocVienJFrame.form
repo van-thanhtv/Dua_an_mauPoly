@@ -111,9 +111,11 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtDiem">
           <Properties>
-            <Property name="text" type="java.lang.String" value="-1"/>
             <Property name="name" type="java.lang.String" value="&#x110;i&#x1ec3;m" noResource="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDiemActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnThem">
           <Properties>
@@ -211,7 +213,7 @@
                     <Column editable="false" title="M&#xc3; HV" type="java.lang.Integer"/>
                     <Column editable="false" title="M&#xc3; NH" type="java.lang.Object"/>
                     <Column editable="false" title="H&#x1ecc; V&#xc0; T&#xca;N" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x110;I&#x1ec2;M (s&#x1eed;a &#x111;c)" type="java.lang.Double"/>
+                    <Column editable="true" title="&#x110;I&#x1ec2;M (s&#x1eed;a &#x111;c)" type="java.lang.Object"/>
                     <Column editable="true" title="X&#xd3;A" type="java.lang.Boolean"/>
                   </Table>
                 </Property>

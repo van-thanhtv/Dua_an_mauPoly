@@ -13,7 +13,7 @@ public class hocVien {
     private int maHV;
     private int maKH;
     private String maNH;
-    private double diem = -1.0;//Mặc định nếu chưa nhập điểm thì điểm là -1
+    private double diem;//Mặc định nếu chưa nhập điểm thì điểm là -1
 
     public int getMaHV() {
         return maHV;

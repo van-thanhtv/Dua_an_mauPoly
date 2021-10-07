@@ -552,7 +552,7 @@ public class QLnhan_Vien_JInternalFrame extends javax.swing.JInternalFrame {
             for (nhanVien nv : list) {
                 Object[] row = {
                     nv.getMaNV(),
-                    nv.isVaiTro() ? matKhauToSao() : shareHelper.USER.isVaiTro() ? hashPassHelper.decrypt(nv.getMatKhau()) : matKhauToSao(),//Kiểm tra vai trò và set sao hoặc mk
+                    this.matKhauToSao(),
                     nv.getHoTen(),
                     nv.getGmail(),
                     nv.isVaiTro() ? "Trưởng phòng" : "Nhân viên"

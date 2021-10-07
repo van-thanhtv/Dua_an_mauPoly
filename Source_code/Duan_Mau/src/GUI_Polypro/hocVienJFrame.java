@@ -44,7 +44,7 @@ public class hocVienJFrame extends javax.swing.JFrame {
         this.HVDao = new hocVienDao();
         this.NHDao = new nguoiHocDao();
         this.khoaHoc = kh;
-        this.lblname.setText("QUẢN LÝ HỌC VIÊN KHÓA HỌC :" + this.khoaHoc.getMaCD()+"("+this.khoaHoc.getNgayKG()+")");
+        this.lblname.setText("QUẢN LÝ HỌC VIÊN KHÓA HỌC :" + this.khoaHoc.getMaCD() + "(" + this.khoaHoc.getNgayKG() + ")");
     }
 
     /**
@@ -87,8 +87,12 @@ public class hocVienJFrame extends javax.swing.JFrame {
             }
         });
 
-        txtDiem.setText("-1");
         txtDiem.setName("Điểm"); // NOI18N
+        txtDiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDiemActionPerformed(evt);
+            }
+        });
 
         btnThem.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Add to basket.png"))); // NOI18N
@@ -139,7 +143,7 @@ public class hocVienJFrame extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, true, true
@@ -324,6 +328,10 @@ public class hocVienJFrame extends javax.swing.JFrame {
         this.fillGridView();
     }//GEN-LAST:event_formWindowOpened
 
+    private void txtDiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDiemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDiemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -385,12 +393,15 @@ public class hocVienJFrame extends javax.swing.JFrame {
         hocVien hv = new hocVien();
         hv.setMaKH(this.khoaHoc.getMaKH());
         hv.setMaNH(nh.getMaNH());
-        hv.setDiem(Double.parseDouble(this.txtDiem.getText()));
+        if (!this.txtDiem.getText().equals("")) {
+            hv.setDiem(Double.parseDouble(this.txtDiem.getText()));
+        }
+        System.out.println(""+hv.getDiem());
         try {
             this.HVDao.insert(hv);
             this.fillComboBox();
             this.fillGridView();
-            this.txtDiem.setText("-1");
+            this.txtDiem.setText("");
             dialogHelper.alert(this, "Thêm mới học viên :" + nh.getHoTen() + "\nVào khóa học :" + this.khoaHoc.getMaCD());
         } catch (Exception e) {
             e.printStackTrace();
@@ -414,13 +425,13 @@ public class hocVienJFrame extends javax.swing.JFrame {
                 double diem = rs.getDouble("Diem");
                 Object[] row = {
                     rs.getInt("MaHV"), rs.getString("MaNH"),
-                    rs.getString("HoTen"), diem, false
+                    rs.getString("HoTen"), diem <= 0 ? "" : diem, false
                 };
                 if (rdoTatCa.isSelected()) {  //tất cả thì add tất cả bản ghi vào 
                     model.addRow(row);
-                } else if (rdoDaNhap.isSelected() && diem >= 0) {//đã nhập thì chỉ add bản ghi điểm 0-10
+                } else if (rdoDaNhap.isSelected() && diem > 0) {//đã nhập thì chỉ add bản ghi điểm 0-10
                     model.addRow(row);
-                } else if (rdoChuaNhap.isSelected() && diem < 0) {//chưa nhập thì chỉ nhập bản ghi điểm -1
+                } else if (rdoChuaNhap.isSelected() && diem <= 0) {//chưa nhập thì chỉ nhập bản ghi điểm -1
                     model.addRow(row);
                 }
             }
@@ -442,20 +453,24 @@ public class hocVienJFrame extends javax.swing.JFrame {
         int a = 0, b = 0;//dùng để kiểm tra và đưa ra thong báo lỗi
         for (int i = 0; i < tblGridView.getRowCount(); i++) {//Dùng vòng For để cập nhập nhiều bản ghi
             String mahv = tblGridView.getValueAt(i, 0).toString();  //lấy maHV từ bảng(ko sửa đc)
-            String manh = (String) tblGridView.getValueAt(i, 1);  //lấy maNH từ bảng(ko sửa đc)            
-            System.out.println(String.valueOf(tblGridView.getValueAt(i, 3)));
-            Double diem = Double.valueOf(String.valueOf(tblGridView.getValueAt(i, 3)));   //lấy điểm (sửa đc)
+            String manh = (String) tblGridView.getValueAt(i, 1);  //lấy maNH từ bảng(ko sửa đc)                       
+            Double diem=0.0;
+            if (!String.valueOf(tblGridView.getValueAt(i, 3)).equals("")) {
+                 diem= Double.valueOf(String.valueOf(tblGridView.getValueAt(i, 3)));   //lấy điểm (sửa đc)
+            }            
             Boolean isDelete = (Boolean) tblGridView.getValueAt(i, 4);
             if (isDelete) {
                 a++;
             }
             if (isDelete && shareHelper.USER.isVaiTro()) {     //nếu có tích thì xóa bản ghi đó đi
-                this.HVDao.delete(mahv);
+                if (dialogHelper.confirm(this, "Bạn có chắc xóa Học viên : "+mahv+" này ?")) {
+                    this.HVDao.delete(mahv);
+                }
             } else {           //còn ko tích thì cập 
                 if (shareHelper.USER.isVaiTro() == false) {
                     tblGridView.setValueAt(false, i, 3);
                 }
-                if ((diem >= 0 && diem <= 10) || diem == -1) {
+                if (diem!=null&& (diem >= 0 && diem <= 10) || diem == -1) {
                     hocVien model = new hocVien();
                     model.setMaHV(Integer.valueOf(mahv));
                     model.setMaKH(this.khoaHoc.getMaKH());
