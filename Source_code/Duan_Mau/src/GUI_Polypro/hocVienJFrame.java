@@ -396,7 +396,7 @@ public class hocVienJFrame extends javax.swing.JFrame {
         if (!this.txtDiem.getText().equals("")) {
             hv.setDiem(Double.parseDouble(this.txtDiem.getText()));
         }
-        System.out.println(""+hv.getDiem());
+        System.out.println("" + hv.getDiem());
         try {
             this.HVDao.insert(hv);
             this.fillComboBox();
@@ -450,34 +450,38 @@ public class hocVienJFrame extends javax.swing.JFrame {
     //cập nhật vào CSDL, load lại bảng, load lại cbo
     private void update() {
         txtDiem.setBackground(white);
-        int a = 0, b = 0;//dùng để kiểm tra và đưa ra thong báo lỗi
+        int a = 0, b = 0, c = 0, e = 0, n = 0;//dùng để kiểm tra và đưa ra thong báo lỗi
         for (int i = 0; i < tblGridView.getRowCount(); i++) {//Dùng vòng For để cập nhập nhiều bản ghi
             String mahv = tblGridView.getValueAt(i, 0).toString();  //lấy maHV từ bảng(ko sửa đc)
             String manh = (String) tblGridView.getValueAt(i, 1);  //lấy maNH từ bảng(ko sửa đc)                       
-            Double diem=0.0;
+            Double diem = 0.0;
             if (!String.valueOf(tblGridView.getValueAt(i, 3)).equals("")) {
-                 diem= Double.valueOf(String.valueOf(tblGridView.getValueAt(i, 3)));   //lấy điểm (sửa đc)
-            }            
+                diem = Double.valueOf(String.valueOf(tblGridView.getValueAt(i, 3)));   //lấy điểm (sửa đc)
+            }
             Boolean isDelete = (Boolean) tblGridView.getValueAt(i, 4);
             if (isDelete) {
                 a++;
             }
             if (isDelete && shareHelper.USER.isVaiTro()) {     //nếu có tích thì xóa bản ghi đó đi
-                if (dialogHelper.confirm(this, "Bạn có chắc xóa Học viên : "+mahv+" này ?")) {
-                    this.HVDao.delete(mahv);
+                if (c == 0) {
+                    if (dialogHelper.confirm(this, "Bạn có chắc xóa Học viên khỏi khóa học !")) {
+                        this.HVDao.delete(mahv);
+                        e++;
+                    }
+                    c++;
                 }
             } else {           //còn ko tích thì cập 
                 if (shareHelper.USER.isVaiTro() == false) {
                     tblGridView.setValueAt(false, i, 3);
                 }
-                if (diem!=null&& (diem >= 0 && diem <= 10) || diem == -1) {
+                if (diem != null && (diem >= 0 && diem <= 10) || diem == -1) {
                     hocVien model = new hocVien();
                     model.setMaHV(Integer.valueOf(mahv));
                     model.setMaKH(this.khoaHoc.getMaKH());
                     model.setMaNH(manh);
                     model.setDiem(diem);
-                    System.out.println("" + model.getMaHV());
                     this.HVDao.update(model);
+                    n++;
                 } else {
                     b++;
                 }
@@ -493,7 +497,9 @@ public class hocVienJFrame extends javax.swing.JFrame {
             dialogHelper.alert(this, "Điểm phải là số thực từ 0-10 hoặc chưa nhập (-1)");
             return;
         }
-        dialogHelper.alert(this, "Cập nhật thành công!");
+        if (e != 0 || n != 0) {
+            dialogHelper.alert(this, "Cập nhật thành công!");
+        }
     }
 
     //lấy tất cả đối tượng nguoiHoc không thuộc khoaHoc từ CSDL (theo maKH)

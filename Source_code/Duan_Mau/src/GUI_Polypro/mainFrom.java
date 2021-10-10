@@ -80,6 +80,7 @@ public class mainFrom extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jSeparator6 = new javax.swing.JToolBar.Separator();
+        jButton7 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jdesktop = new javax.swing.JDesktopPane(){
             protected void  paintComponent (Graphics g){
@@ -208,6 +209,20 @@ public class mainFrom extends javax.swing.JFrame {
         jToolBar1.add(jButton4);
         jToolBar1.add(jSeparator6);
 
+        jButton7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/User group.png"))); // NOI18N
+        jButton7.setText("Học viên");
+        jButton7.setFocusable(false);
+        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton7.setMargin(new java.awt.Insets(12, 30, 12, 30));
+        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton7);
+
         jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/global.png"))); // NOI18N
         jButton6.setText("Hướng dẫn");
@@ -236,7 +251,7 @@ public class mainFrom extends javax.swing.JFrame {
         jdesktop.setLayout(jdesktopLayout);
         jdesktopLayout.setHorizontalGroup(
             jdesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 860, Short.MAX_VALUE)
+            .addGap(0, 990, Short.MAX_VALUE)
         );
         jdesktopLayout.setVerticalGroup(
             jdesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,7 +292,7 @@ public class mainFrom extends javax.swing.JFrame {
                 .addComponent(lblFacebook, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(lblUser)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 346, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 476, Short.MAX_VALUE)
                 .addComponent(lblDongHo))
         );
         jPanel1Layout.setVerticalGroup(
@@ -593,6 +608,11 @@ public class mainFrom extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lblFacebookMouseClicked
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        openHocVien();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -636,6 +656,7 @@ public class mainFrom extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -719,6 +740,15 @@ public class mainFrom extends javax.swing.JFrame {
         if (shareHelper.authenticated()) {
             QLnhan_Vien_JInternalFrame frmNhanVien = new QLnhan_Vien_JInternalFrame();
             openX(frmNhanVien);
+        } else {
+            dialogHelper.alert(this, "Vui lòng đăng nhập!");
+        }
+    }
+
+    private void openHocVien() {
+        if (shareHelper.authenticated()) {
+            HocVienJInternalFrame frmHocVien = new HocVienJInternalFrame();
+            openX(frmHocVien);
         } else {
             dialogHelper.alert(this, "Vui lòng đăng nhập!");
         }

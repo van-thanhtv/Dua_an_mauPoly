@@ -18,4 +18,5 @@ public interface khoaHocInterface {
         public void delete(String maKH);//Xóa khoa học trong CSDL
         public ArrayList<khoaHoc> select();//Truy vấn danh sách khoa học
         public khoaHoc findById(String maKH);//Truy vấn theo mãKH trả về đối tượng chứa thông tin bản ghi
+        public ArrayList<khoaHoc> selectByCD(String maCD);//Truy vấn theo mãKH trả về đối tượng chứa thông tin bản ghi
 }

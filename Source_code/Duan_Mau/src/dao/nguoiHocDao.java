@@ -115,9 +115,9 @@ public class nguoiHocDao implements nguoiHocInterface {
     }
     //truy xuất tất cả người học không học khóa học maKH
     @Override
-    public ArrayList<nguoiHoc> selectByCourse(Integer makh) {//để là Integer cho đúng kiểu Object Trong CSDL
-        String sql="SELECT * FROM NguoiHoc WHERE MaNH NOT IN (SELECT MaNH FROM HocVien WHERE MaKH=?)";
-        return select(sql, makh);
+    public ArrayList<nguoiHoc> selectByCourse(Integer makh,String...key) {//để là Integer cho đúng kiểu Object Trong CSDL
+        String sql="SELECT * FROM NguoiHoc WHERE MaNH NOT IN (SELECT MaNH FROM HocVien WHERE MaKH=?) and HoTen LIKE ?";
+        return select(sql, makh,"%"+key+"%");
     }
     //truy xuất người học theo maNH
     @Override

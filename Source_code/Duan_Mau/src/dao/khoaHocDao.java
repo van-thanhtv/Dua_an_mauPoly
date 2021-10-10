@@ -119,6 +119,11 @@ public class khoaHocDao extends eduSysDao<khoaHoc, String>implements khoaHocInte
         String sql="SELECT * FROM KhoaHoc WHERE MaKH=?";
         return selectBySql(sql, id).size()>0?selectBySql(sql, id).get(0):null;
     }
+    @Override
+    public ArrayList<khoaHoc> selectByCD(String id) {
+        String sql="SELECT * FROM KhoaHoc WHERE MaCD=?";
+        return select(sql,id);
+    }
 
     @Override
     protected ArrayList<khoaHoc> selectBySql(String sql, Object... args) {
