@@ -503,6 +503,8 @@ public class QLnhan_Vien_JInternalFrame extends javax.swing.JInternalFrame {
      */
     private void setStatus(boolean insertable) {
         txtMaNV.setEditable(insertable);    //enable txtMaNV
+        txtMatKhau.setEditable(insertable);    //enable txtMaNV
+        txtXacNhanMK.setEditable(insertable);    //enable txtMaNV
         btnInsert.setEnabled(insertable);   //enable btnInsert
         btnUpdate.setEnabled(!insertable);  //disable btnUpdate
         btnDelete.setEnabled(!insertable);  //disable brnDelete

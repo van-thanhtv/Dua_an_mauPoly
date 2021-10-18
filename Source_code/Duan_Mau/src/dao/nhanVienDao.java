@@ -57,7 +57,7 @@ public class nhanVienDao implements nhanVienInterface{
      */
     @Override
     public void insert(nhanVien entity) {
-        String sql ="INSERT INTO NhanVien (MaNV, MatKhau, HoTen,Gmail, VaiTro) VALUES (?, ?, ?, ?,?)";
+        String sql ="INSERT INTO NhanVien (MaNV, MatKhau, HoTen,Gmail, VaiTro,IsDeleted) VALUES (?, ?, ?, ?,?,?)";
         try {
             jdbcHelper.executeUpdate(sql,
                 entity.getMaNV(),
@@ -65,7 +65,7 @@ public class nhanVienDao implements nhanVienInterface{
                 entity.isVaiTro() ? hashPassHelper.encrypt(entity.getMatKhau()):hashPassHelper.Myencrypt(entity.getMatKhau().getBytes("UTF-8")),//Nếu vai trò là quản lý thì thực hên băm pass theo "MD5" nếu là nhân viên thì băm pass theo kiểu "AES";
                 entity.getHoTen(),
                 entity.getGmail(),
-                entity.isVaiTro()
+                entity.isVaiTro(),0
                 );
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,11 +78,10 @@ public class nhanVienDao implements nhanVienInterface{
      */
     @Override
     public void update(nhanVien entity) {
-        String sql="UPDATE NhanVien SET MatKhau=?, HoTen=?,Gmail=?, VaiTro=? WHERE MaNV=?";
+        String sql="UPDATE NhanVien SET  HoTen=?,Gmail=?, VaiTro=? WHERE MaNV=?";
         try {
             jdbcHelper.executeUpdate(sql,                
-                //Nếu vai trò là nhân viên thì thực hiên băm pas 2 chiều còn không thì 1 chiều
-                entity.isVaiTro() ? hashPassHelper.encrypt(entity.getMatKhau()):hashPassHelper.Myencrypt(entity.getMatKhau().getBytes("UTF-8")),//Nếu vai trò là quản lý thì thực hên băm pass theo "MD5" nếu là nhân viên thì băm pass theo kiểu "AES";
+                //Nếu vai trò là nhân viên thì thực hiên băm pas 2 chiều còn không thì 1 chiều                
                 entity.getHoTen(),
                 entity.getGmail(),
                 entity.isVaiTro(),
@@ -99,7 +98,7 @@ public class nhanVienDao implements nhanVienInterface{
      */
     @Override
     public void delete(String maNV) {
-        String sql="DELETE FROM NhanVien WHERE MaNV=?";
+        String sql="UPDATE NhanVien SET IsDeleted = 1  WHERE MaNV=?";
         jdbcHelper.executeUpdate(sql, maNV);
     }
      /**
@@ -108,14 +107,14 @@ public class nhanVienDao implements nhanVienInterface{
      */
     @Override
     public ArrayList<nhanVien> select() {
-        String sql="SELECT * FROM NhanVien";
+        String sql="SELECT * FROM NhanVien WHERE IsDeleted = 0";
         return this.select(sql);//trong 1 class có thể có 2 method trùng tên (nhưng param khác nhau)
     }
     //Truy vấn nhân viên theo mã nhân viên
     //Return nhân viên chứa thôn tin bản ghi
     @Override
     public nhanVien findById(String id) {
-        String sql="SELECT * FROM NhanVien WHERE MaNV=?";
+        String sql="SELECT * FROM NhanVien WHERE MaNV=? and IsDeleted =0";
         ArrayList<nhanVien> listNV = this.select(sql,id);
         return listNV.size()>0 ? listNV.get(0):null;//Nếu như không có nhân viên nào trùng id thì trả về null
     }

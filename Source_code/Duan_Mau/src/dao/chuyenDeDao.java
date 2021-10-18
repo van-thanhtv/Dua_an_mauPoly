@@ -58,14 +58,14 @@ public class chuyenDeDao extends eduSysDao<chuyenDe, String> implements chuyenDe
      */
     @Override
     public void insert(chuyenDe entity) {
-        String sql = "INSERT INTO ChuyenDe (MaCD, TenCD, HocPhi, ThoiLuong, Hinh, MoTa) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ChuyenDe (MaCD, TenCD, HocPhi, ThoiLuong, Hinh, MoTa,IsDeleted) VALUES (?, ?, ?, ?, ?, ?,?)";
         jdbcHelper.executeUpdate(sql,
                 entity.getMaCD(),
                 entity.getTenCD(),
                 entity.getHocPhi(),
                 entity.getThoiLuong(),
                 entity.getHinh(),
-                entity.getMoTa()
+                entity.getMoTa(),0
         );
     }
 
@@ -94,7 +94,7 @@ public class chuyenDeDao extends eduSysDao<chuyenDe, String> implements chuyenDe
      */
     @Override
     public void delete(String maCD) {
-        String sql = "DELETE FROM ChuyenDe WHERE MaCD=?";
+        String sql = "UPDATE ChuyenDe SET IsDeleted = 1 WHERE MaCD=?";
         jdbcHelper.executeUpdate(sql, maCD);
     }
 
@@ -102,7 +102,7 @@ public class chuyenDeDao extends eduSysDao<chuyenDe, String> implements chuyenDe
     //Return về list chuyên đề
     @Override
     public ArrayList<chuyenDe> select() {
-        String sql = "SELECT * FROM ChuyenDe";
+        String sql = "SELECT * FROM ChuyenDe WHERE IsDeleted = 0";
         return select(sql);
     }
 
@@ -111,19 +111,19 @@ public class chuyenDeDao extends eduSysDao<chuyenDe, String> implements chuyenDe
     //Return về chuyên đề tương ứng
     @Override
     public chuyenDe findById(String maCD) {
-        String sql = "SELECT * FROM ChuyenDe WHERE MaCD=?";
+        String sql = "SELECT * FROM ChuyenDe WHERE MaCD=? and IsDeleted =0";
         return select(sql, maCD).size() > 0 ? select(sql, maCD).get(0) : null;
     }
     //-------------------------------------------Theo cms-----------------------------------
     @Override
     public ArrayList<chuyenDe> selectAll() {
-        String sql = "SELECT * FROM ChuyenDe";
+        String sql = "SELECT * FROM ChuyenDe where IsDeleted =0";
         return selectBySql(sql);
     }
 
     @Override
     public chuyenDe selectByid(String id) {
-        String sql = "SELECT * FROM ChuyenDe WHERE MaCD=?";
+        String sql = "SELECT * FROM ChuyenDe WHERE MaCD=? and IsDeleted =0";
         return selectBySql(sql, id).size() > 0 ? selectBySql(sql, id).get(0) : null;
     }
 

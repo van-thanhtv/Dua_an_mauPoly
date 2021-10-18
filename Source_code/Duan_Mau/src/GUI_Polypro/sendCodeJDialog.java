@@ -78,6 +78,11 @@ public class sendCodeJDialog extends javax.swing.JDialog {
                 txtmaNVActionPerformed(evt);
             }
         });
+        txtmaNV.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtmaNVKeyPressed(evt);
+            }
+        });
 
         btnSendCode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/gmail.png"))); // NOI18N
         btnSendCode.setText("Send Code");
@@ -170,6 +175,15 @@ public class sendCodeJDialog extends javax.swing.JDialog {
             dialogHelper.alert(this, "Không tìm thấy mã nhân viên :" + this.txtmaNV.getText() + " trong CSDL");
         }
     }//GEN-LAST:event_txtmaNVActionPerformed
+
+    private void txtmaNVKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmaNVKeyPressed
+        // TODO add your handling code here:
+        nhanVienInterface dao = new nhanVienDao();
+        this.nhanVien = dao.findById(this.txtmaNV.getText());
+        if (nhanVien != null) {
+            this.txtEmail.setText(nhanVien.getGmail());
+        }
+    }//GEN-LAST:event_txtmaNVKeyPressed
 
     /**
      * @param args the command line arguments

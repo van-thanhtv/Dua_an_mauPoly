@@ -456,7 +456,11 @@ public class hocVienJFrame extends javax.swing.JFrame {
             String manh = (String) tblGridView.getValueAt(i, 1);  //lấy maNH từ bảng(ko sửa đc)                       
             Double diem = 0.0;
             if (!String.valueOf(tblGridView.getValueAt(i, 3)).equals("")) {
-                diem = Double.valueOf(String.valueOf(tblGridView.getValueAt(i, 3)));   //lấy điểm (sửa đc)
+                try {
+                    diem = Double.valueOf(String.valueOf(tblGridView.getValueAt(i, 3)));   //lấy điểm (sửa đc)
+                } catch (NumberFormatException l) {
+                    b++;
+                }                
             }
             Boolean isDelete = (Boolean) tblGridView.getValueAt(i, 4);
             if (isDelete) {
@@ -474,7 +478,7 @@ public class hocVienJFrame extends javax.swing.JFrame {
                 if (shareHelper.USER.isVaiTro() == false) {
                     tblGridView.setValueAt(false, i, 3);
                 }
-                if (diem != null && (diem >= 0 && diem <= 10) || diem == -1) {
+                if ((diem >= 0 && diem <= 10) || diem == -1) {
                     hocVien model = new hocVien();
                     model.setMaHV(Integer.valueOf(mahv));
                     model.setMaKH(this.khoaHoc.getMaKH());
@@ -511,6 +515,8 @@ public class hocVienJFrame extends javax.swing.JFrame {
             //lấy tất cả đối tượng nguoiHoc không thuộc khoaHoc từ CSDL
             //rồi thêm vào combobox
             ArrayList<nguoiHoc> list = this.NHDao.selectByCourse(this.khoaHoc.getMaKH());
+            System.out.println(list.size());
+            System.out.println("MaKH"+khoaHoc.getMaKH());
             for (nguoiHoc nh : list) {
                 model.addElement(nh);
             }

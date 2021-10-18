@@ -16,7 +16,9 @@ import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import model.chuyenDe;
 
 /**
@@ -28,6 +30,7 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
     private int index = 0;//Vị trí chuyên đề đang được chọn
     private chuyenDeInterface CDDao;
     private JFileChooser fileChooser;
+    private DefaultTableModel model;
 
     /**
      * Creates new form QLchuyen_de_JInternalFrame
@@ -78,6 +81,10 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
         pnlList = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblGridView = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        txttimkiem = new javax.swing.JTextField();
+        btntimkiem = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -338,6 +345,52 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
 
         pnlList.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Tìm kiếm"));
+        jPanel1.setOpaque(false);
+        jPanel1.setPreferredSize(new java.awt.Dimension(714, 73));
+
+        jLabel8.setText("Tìm kiếm");
+
+        txttimkiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txttimkiemKeyPressed(evt);
+            }
+        });
+
+        btntimkiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Zoom.png"))); // NOI18N
+        btntimkiem.setText("Tìm kiếm");
+        btntimkiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btntimkiemActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txttimkiem, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btntimkiem)
+                .addContainerGap(8, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txttimkiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btntimkiem, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlList.add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
         tabs.addTab("DANH SÁCH", new javax.swing.ImageIcon(getClass().getResource("/icon/List.png")), pnlList, "Danh sách"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -455,8 +508,24 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         // TODO add your handling code here:
         this.load();
-        this.setStatus(true);        
+        this.setStatus(true);
     }//GEN-LAST:event_formInternalFrameOpened
+
+    private void btntimkiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntimkiemActionPerformed
+        // TODO add your handling code here:
+        this.model.fireTableDataChanged();
+        TableRowSorter Sorter = new TableRowSorter(this.model);
+        this.tblGridView.setRowSorter(Sorter);
+        Sorter.setRowFilter(RowFilter.regexFilter(this.txttimkiem.getText()));
+    }//GEN-LAST:event_btntimkiemActionPerformed
+
+    private void txttimkiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txttimkiemKeyPressed
+        // TODO add your handling code here:
+        this.model.fireTableDataChanged();
+        TableRowSorter Sorter = new TableRowSorter(this.model);
+        this.tblGridView.setRowSorter(Sorter);
+        Sorter.setRowFilter(RowFilter.regexFilter(this.txttimkiem.getText()));
+    }//GEN-LAST:event_txttimkiemKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -468,6 +537,7 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnPrev;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btntimkiem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -475,6 +545,8 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblHinh;
@@ -487,6 +559,7 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JTextArea txtMoTa;
     private javax.swing.JTextField txtTenCD;
     private javax.swing.JTextField txtThoiLuong;
+    private javax.swing.JTextField txttimkiem;
     // End of variables declaration//GEN-END:variables
     private boolean checkNullHinh() {
         if (lblHinh.getToolTipText() != null) {
@@ -507,11 +580,12 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
             return false;
         }
     }
+
     /*
     lấy thông tin trên form, thêm bản ghi chuyenDe mới vào CSDL
     load lại bảng
     xóa trắng form, để ở trạng thái insertable
-    */
+     */
     private void insert() {
         chuyenDe model = getModel();
         try {
@@ -523,6 +597,7 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
             dialogHelper.alert(this, "Thêm mới thất bại!");
         }
     }
+
     //lấy thông tin trên form, cập nhật vào bản ghi CSDL theo maCD
     //load lại bảng
     private void update() {
@@ -535,6 +610,7 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
             dialogHelper.alert(this, "Cập nhật thất bại!");
         }
     }
+
     //xóa bản ghi trong CSDL theo maCD lấy trên form
     //load lại bảng
     //xóa trắng form, chuyển sang insertable
@@ -551,11 +627,13 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
             }
         }
     }
+
     //xóa trắng form, chuyển sang insertable
     private void clear() {
         this.setModel(new chuyenDe());
-        this.setStatus(true);        
+        this.setStatus(true);
     }
+
     //lấy maCD theo index, lấy đt chuyenDe từ CSDL theo maCD 
     //hiển thị thông tin từ đt chuyenDe lên form, chuyển sang editable
     private void edit() {
@@ -570,6 +648,7 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
             dialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
         }
     }
+
     /*
     hiển thị hộp thoại cho người dùng chọn file
     copy file đó vào thư mục logos
@@ -585,7 +664,7 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
     nếu người dùng đã chọn (lưu) đc file
         File file = c.getSelectedFile(); lấy file chọn (lưu) đc
         String path = c.getSelectedFile().toString(); lấy đường dẫn file chọn (lưu) đc
-    */
+     */
     private void selectImage() {
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { //nếu người dùng đã chọn đc file
             File file = fileChooser.getSelectedFile();    //lấy file người dùng chọn
@@ -598,9 +677,10 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
             }
         }
     }
+
     //xóa bảng, đổ toàn bộ chuyenDe từ CSDL vào bảng 
     private void load() {
-        DefaultTableModel model = (DefaultTableModel) tblGridView.getModel();
+        this.model = (DefaultTableModel) tblGridView.getModel();
         model.setRowCount(0);
         try {
             ArrayList<chuyenDe> list = this.CDDao.select();
@@ -618,6 +698,7 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
             dialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
         }
     }
+
     /*
     insertable:
         enable: txtMaCD, btnInsert, btnClear
@@ -625,7 +706,7 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
     editable:
         ngược lại
     btnClear lúc nào cũng enable
-    */
+     */
     private void setStatus(boolean insertable) {
         txtMaCD.setEditable(insertable);
         btnInsert.setEnabled(insertable);
@@ -638,6 +719,7 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
         btnLast.setEnabled(!insertable && last);
         btnNext.setEnabled(!insertable && last);
     }
+
     //lấy thông tin trên form điền vào đt chuyenDe
     //return chuyenDe
     private chuyenDe getModel() {
@@ -650,6 +732,7 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
         model.setMoTa(txtMoTa.getText());
         return model;
     }
+
     //lấy thông tin từ đt chuyenDe đưa lên form
     //lưu ý lấy hình ảnh từ thư mục logos đưa lên form theo tenFile lấy từ chuyenDe
     private void setModel(chuyenDe model) {
@@ -664,8 +747,8 @@ public class QLchuyen_de_JInternalFrame extends javax.swing.JInternalFrame {
             /*
             ImageIcon readLogo(String tenFile) đọc file trong thư mục logos theo tên file trả về ImageIcon
             void setIcon(ImageIcon icon) set Icon cho lbl
-            */
-        }else{
+             */
+        } else {
             lblHinh.setIcon(shareHelper.readLogo("noImage.png"));
         }
     }

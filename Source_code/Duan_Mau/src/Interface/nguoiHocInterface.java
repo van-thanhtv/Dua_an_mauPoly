@@ -19,6 +19,6 @@ public interface nguoiHocInterface {
     public void delete(String maNH);//Xóa người học trong CSDL
     public ArrayList<nguoiHoc> select();//Truy vấn danh sách người học
     public ArrayList<nguoiHoc> selectByKeyword(String keyword);
-    public ArrayList<nguoiHoc> selectByCourse(Integer makh,String...key);
+    public ArrayList<nguoiHoc> selectByCourse(Integer makh);
     public nguoiHoc findById(String maNH);//Truy vấn theo mãNH trả về đối tượng chứa thông tin bản ghi
 }

@@ -622,7 +622,8 @@ public class QLnguoi_hoc_JInternalFrame extends javax.swing.JInternalFrame {
             //nếu ko có keywork thì sẽ là tất cả người học
             String keyword = txtTimKiem.getText();
             ArrayList<nguoiHoc> list = this.NHDao.selectByKeyword(keyword);
-            //đưa list tìm được lên bảng
+            //đưa list tìm được lên bảng            
+            System.out.println(list.size());
             for (nguoiHoc nh : list) {
                 Object[] row = {
                     nh.getMaNH(),

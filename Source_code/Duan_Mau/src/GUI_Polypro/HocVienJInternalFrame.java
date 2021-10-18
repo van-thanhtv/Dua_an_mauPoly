@@ -16,12 +16,13 @@ import dao.nguoiHocDao;
 import helper.dialogHelper;
 import helper.jdbcHelper;
 import helper.shareHelper;
-import helper.utilityHelper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import model.chuyenDe;
 import model.hocVien;
 import model.khoaHoc;
@@ -40,6 +41,7 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
     private nguoiHocInterface NHDao;
     private khoaHocInterface KHDao;
     private chuyenDeInterface CDDao;
+    private DefaultTableModel model;
 
     public HocVienJInternalFrame() {
         initComponents();
@@ -76,6 +78,7 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         txtTimKiem = new javax.swing.JTextField();
+        btntimKiem = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblNguoiHoc = new javax.swing.JTable();
         btnThem = new javax.swing.JButton();
@@ -132,11 +135,6 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Khóa học"));
 
         cbbKhoaHoc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbbKhoaHoc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbKhoaHocActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -183,7 +181,7 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(417, Short.MAX_VALUE)
+                .addContainerGap(453, Short.MAX_VALUE)
                 .addComponent(btnDELETE, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnUPDETE, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -193,8 +191,8 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDELETE)
                     .addComponent(btnUPDETE))
@@ -210,6 +208,19 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
                 txtTimKiemActionPerformed(evt);
             }
         });
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyPressed(evt);
+            }
+        });
+
+        btntimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Zoom.png"))); // NOI18N
+        btntimKiem.setText("Tìm kiếm");
+        btntimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btntimKiemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -217,13 +228,17 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 779, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 693, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(btntimKiem)
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btntimKiem))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -253,11 +268,11 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 820, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnThem)))
+                        .addComponent(btnThem))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -265,10 +280,10 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnThem)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         tabs.addTab("Người Học Khác", new javax.swing.ImageIcon(getClass().getResource("/icon/Numbered list.png")), jPanel4); // NOI18N
@@ -304,7 +319,7 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -331,11 +346,6 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
         fillComboBoxKhoaHoc();
     }//GEN-LAST:event_cbbChuyenDeActionPerformed
 
-    private void cbbKhoaHocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbKhoaHocActionPerformed
-        // TODO add your handling code here:
-        fillTableHocVien();
-    }//GEN-LAST:event_cbbKhoaHocActionPerformed
-
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
         // TODO add your handling code here:
         fillTableNguoiHoc();
@@ -346,11 +356,28 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
         insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
+    private void btntimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntimKiemActionPerformed
+        // TODO add your handling code here
+        this.model.fireTableDataChanged();
+        TableRowSorter Sorter = new TableRowSorter(this.model);
+        this.tblNguoiHoc.setRowSorter(Sorter);
+        Sorter.setRowFilter(RowFilter.regexFilter(this.txtTimKiem.getText()));
+    }//GEN-LAST:event_btntimKiemActionPerformed
+
+    private void txtTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyPressed
+        // TODO add your handling code here:
+        this.model.fireTableDataChanged();
+        TableRowSorter Sorter = new TableRowSorter(this.model);
+        this.tblNguoiHoc.setRowSorter(Sorter);
+        Sorter.setRowFilter(RowFilter.regexFilter(this.txtTimKiem.getText()));
+    }//GEN-LAST:event_txtTimKiemKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDELETE;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnUPDETE;
+    private javax.swing.JButton btntimKiem;
     private javax.swing.JComboBox<String> cbbChuyenDe;
     private javax.swing.JComboBox<String> cbbKhoaHoc;
     private javax.swing.JPanel jPanel1;
@@ -378,6 +405,17 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
                     model.addElement(kh);    //thêm đối tượng (Object) vào model                
                     //chỉ thêm đc đối tượng đối với model, cbo chỉ được cbo.addItem(String);
                     //lấy đối tượng thì từ cbo cũng được: cbo.getSelectedItem();
+                }//Nếu không có khóa học thì hiện thị chuyên đề này không có khóa học và set bảng về null
+                if (list.size() <= 0) {
+                    this.cbbKhoaHoc.setToolTipText("null");
+                    this.cbbKhoaHoc.removeAllItems();
+                    this.cbbKhoaHoc.addItem("Chuyên đề này không có khóa học!");
+                    DefaultTableModel modelTablHV = (DefaultTableModel) tblHocVIen.getModel();
+                    modelTablHV.setRowCount(0);
+                    DefaultTableModel modelTablNH = (DefaultTableModel) tblNguoiHoc.getModel();
+                    modelTablNH.setRowCount(0);
+                } else {
+                    this.fillTableHocVien();
                 }
             }
         } catch (Exception e) {
@@ -393,7 +431,8 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
         } else {
             if (dialogHelper.confirm(this, "Bạn muốn xóa các học viên được chọn ?")) {
                 for (int row : this.tblHocVIen.getSelectedRows()) {
-                    String mahv = (String) this.tblHocVIen.getValueAt(row, 1);
+                    String mahv = this.tblHocVIen.getValueAt(row, 1).toString();
+                    System.out.println(mahv);
                     HVDao.delete(mahv);
                 }
                 this.fillTableHocVien();
@@ -407,26 +446,27 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
             Double diem = 0.0;
             int mahv = (Integer) this.tblHocVIen.getValueAt(i, 1);
             if (!String.valueOf(this.tblHocVIen.getValueAt(i, 4)).equals("")) {
-                diem = Double.parseDouble(this.tblHocVIen.getValueAt(i, 4).toString());
+                try {
+                    diem = Double.parseDouble(this.tblHocVIen.getValueAt(i, 4).toString());
+                } catch (NumberFormatException e) {
+                    b++;
+                }
             }
-            if (diem != null && (diem >= 0 && diem <= 10) || diem == 0.0) {
+            
+            if ((diem >= 0 && diem <= 10) || diem == 0.0) {
                 hocVien model = this.HVDao.findById(String.valueOf(mahv));
-//                    model.setMaHV(Integer.valueOf((Integer)this.tblHocVIen.getValueAt(i, 1)));
                 model.setDiem(diem);
                 this.HVDao.update(model);
             } else {
                 b++;
             }
-//            int mahv= (Integer)this.tblHocVIen.getValueAt(i, 1);
-//            hocVien hv = this.HVDao.findById(String.valueOf(mahv));
-//            hv.setDiem(diem);
-//            this.HVDao.update(hv);
         }
         if (b > 0) {
             dialogHelper.alert(this, "Điểm phải là số thực từ 0-10 hoặc chưa nhập (-1)");
             return;
-        }else
-        dialogHelper.alert(this, "Cập nhập điểm thành công!");
+        } else {
+            dialogHelper.alert(this, "Cập nhập điểm thành công!");
+        }
 
     }
 
@@ -477,17 +517,17 @@ public class HocVienJInternalFrame extends javax.swing.JInternalFrame {
     }
 
     private void fillTableNguoiHoc() {
-        DefaultTableModel model = (DefaultTableModel) tblNguoiHoc.getModel();
+        this.model = (DefaultTableModel) tblNguoiHoc.getModel();
         model.setRowCount(0);
         khoaHoc kh = (khoaHoc) this.cbbKhoaHoc.getSelectedItem();
-        String keyword = this.txtTimKiem.getText();
-        ArrayList<nguoiHoc> list = this.NHDao.selectByCourse(kh.getMaKH(), keyword);
+        System.out.println(kh.getMaKH());
+        ArrayList<nguoiHoc> list = this.NHDao.selectByCourse(kh.getMaKH());
+        System.out.println("" + list.size());
         for (nguoiHoc hoc : list) {
             model.addRow(new Object[]{
                 hoc.getMaNH(), hoc.getHoTen(), hoc.isGioiTinh() ? "Nam" : "Nữ", hoc.getNgaySinh(), hoc.getDienThoai(), hoc.getEmail()
             });
         }
-
     }
 
     private void insert() {

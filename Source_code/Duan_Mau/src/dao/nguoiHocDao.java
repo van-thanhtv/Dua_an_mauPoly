@@ -31,7 +31,6 @@ public class nguoiHocDao implements nguoiHocInterface {
         learner.setGhiChu(rs.getString("GhiChu"));
         learner.setMaNV(rs.getString("MaNV"));
         learner.setNgayDK(rs.getDate("NgayDK"));
-
         return learner;
     }
 
@@ -46,6 +45,7 @@ public class nguoiHocDao implements nguoiHocInterface {
                 while (rs.next()) {
                     listNH.add(readFromResultSet(rs));
                 }
+                System.out.println("dao :"+listNH.size());
             } finally {
                 rs.getStatement().getConnection().close();//Đóng kết nối bằng RS
             }
@@ -61,7 +61,7 @@ public class nguoiHocDao implements nguoiHocInterface {
      */
     @Override
     public void insert(nguoiHoc entity) {
-        String sql = "INSERT INTO NguoiHoc (MaNH, HoTen, NgaySinh, GioiTinh, DienThoai, Email, GhiChu, MaNV) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO NguoiHoc (MaNH, HoTen, NgaySinh, GioiTinh, DienThoai, Email, GhiChu, MaNV,IsDeleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
         jdbcHelper.executeUpdate(sql,
                 entity.getMaNH(),
                 entity.getHoTen(),
@@ -70,7 +70,7 @@ public class nguoiHocDao implements nguoiHocInterface {
                 entity.getDienThoai(),
                 entity.getEmail(),
                 entity.getGhiChu(),
-                entity.getMaNV());
+                entity.getMaNV(),0);
     }
     /**
      * Cập nhập người học vào CSDL     
@@ -95,7 +95,7 @@ public class nguoiHocDao implements nguoiHocInterface {
      */
     @Override
     public void delete(String maNH) {
-        String sql="DELETE FROM NguoiHoc WHERE MaNH=?";
+        String sql="UPDATE NguoiHoc SET IsDeleted = 1 WHERE MaNH=?";
         jdbcHelper.executeUpdate(sql, maNH);
     }
     /**
@@ -110,19 +110,20 @@ public class nguoiHocDao implements nguoiHocInterface {
     //Truy vấn người học theo keyword
     @Override
     public ArrayList<nguoiHoc> selectByKeyword(String keyword) {
-        String sql="SELECT * FROM NguoiHoc WHERE HoTen LIKE ?";
+        String sql="SELECT * FROM NguoiHoc WHERE HoTen LIKE ? and IsDeleted = 0";
         return select(sql, "%"+keyword+"%");
     }
     //truy xuất tất cả người học không học khóa học maKH
     @Override
-    public ArrayList<nguoiHoc> selectByCourse(Integer makh,String...key) {//để là Integer cho đúng kiểu Object Trong CSDL
-        String sql="SELECT * FROM NguoiHoc WHERE MaNH NOT IN (SELECT MaNH FROM HocVien WHERE MaKH=?) and HoTen LIKE ?";
-        return select(sql, makh,"%"+key+"%");
+    public ArrayList<nguoiHoc> selectByCourse(Integer makh) {//để là Integer cho đúng kiểu Object Trong CSDL
+               String sql = "SELECT * FROM NguoiHoc WHERE "                
+                + "MaNH NOT IN (SELECT MaNH FROM HocVien WHERE MaKH=?) and IsDeleted =0";
+        return this.select(sql,makh);
     }
     //truy xuất người học theo maNH
     @Override
     public nguoiHoc findById(String maNH) {
-        String sql="SELECT * FROM NguoiHoc WHERE MaNH=?";
+        String sql="SELECT * FROM NguoiHoc WHERE MaNH=? and IsDeleted =0";
         ArrayList<nguoiHoc> list = select(sql, maNH);
         return list.size() > 0 ? list.get(0) : null;
     }

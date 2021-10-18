@@ -30,20 +30,19 @@ import javax.swing.Timer;
  * @author Tran Van Thanh
  */
 public class mainFrom extends javax.swing.JFrame {
-
     /**
      * Creates new form mainFrom
      */
     public mainFrom() {
         initComponents();
         init();
-        this.lblFacebook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));//Làm cho con trỏ chuột thay đổi
     }
 
     private void init() {
         setIconImage(shareHelper.APP_ICON); //đặt icon góc trên trái
         setLocationRelativeTo(null);    //cho ra giữa màn hình
         setExtendedState(JFrame.MAXIMIZED_BOTH);    //cho toàn màn hình 
+        this.lblFacebook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));//Làm cho con trỏ chuột thay đổi
         /*
         làm đồng hồ
         Timer t=new Timer(s, ActionListener); sk lặp lại sau s ms
@@ -760,7 +759,7 @@ public class mainFrom extends javax.swing.JFrame {
             frmChild.dispose();
         }
         x.setLocation(this.getWidth() / 2 - x.getWidth() / 2,
-                (this.getHeight() - 20) / 2 - x.getHeight() / 2 - 60);
+                (this.getHeight() - 20) / 2 - x.getHeight() / 2 - 65);
         jdesktop.add(x);
         x.setVisible(true);
     }
