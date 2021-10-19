@@ -6,6 +6,7 @@
 package GUI_Polypro;
 
 import Interface.nhanVienInterface;
+import dao.nhanVienDao;
 import helper.dialogHelper;
 import helper.hashPassHelper;
 import helper.shareHelper;
@@ -27,6 +28,7 @@ public class doiMatKhauJDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        this.NVDao=new nhanVienDao();
         this.txtMaNV.setEditable(false);
         this.txtMaNV.setText(shareHelper.USER.getMaNV());
     }
@@ -227,11 +229,13 @@ public class doiMatKhauJDialog extends javax.swing.JDialog {
         try {
             txtXacNhanMKM.setBackground(Color.white);
             txtMatKhau.setBackground(Color.white);
+            String matKhauMoi = new String(txtMatKhauMoi.getPassword());
+            String xacNhanMKM = new String(txtXacNhanMKM.getPassword());
             if (shareHelper.USER.isVaiTro()) {
                 if (hashPassHelper.encrypt(this.txtMatKhau.getText()).equals(shareHelper.USER.getMatKhau())) {
-                    if (this.txtMatKhauMoi.getText().equals(this.txtXacNhanMKM)) {
-                        shareHelper.USER.setMatKhau(hashPassHelper.encrypt(this.txtMatKhauMoi.getText()));
-                        this.NVDao.update(shareHelper.USER);
+                    if (matKhauMoi.equals(xacNhanMKM)) {
+                        shareHelper.USER.setMatKhau(hashPassHelper.encrypt(matKhauMoi));
+                        this.NVDao.updatemk(shareHelper.USER);
                         dialogHelper.alert(this, "Đổi mật khẩu thành công");
                         this.dispose();
                     } else {
@@ -244,9 +248,9 @@ public class doiMatKhauJDialog extends javax.swing.JDialog {
                 }
             } else {
                 if (this.txtMatKhau.getText().equals(hashPassHelper.decrypt(shareHelper.USER.getMatKhau()))) {
-                    if (this.txtMatKhauMoi.getText().equals(this.txtXacNhanMKM)) {
-                        shareHelper.USER.setMatKhau(hashPassHelper.Myencrypt(this.txtMatKhauMoi.getText().getBytes("UTF-8")));
-                        this.NVDao.update(shareHelper.USER);
+                    if (matKhauMoi.equals(xacNhanMKM)) {
+                        shareHelper.USER.setMatKhau(hashPassHelper.Myencrypt(matKhauMoi.getBytes("UTF-8")));
+                        this.NVDao.updatemk(shareHelper.USER);
                         dialogHelper.alert(this, "Đổi mật khẩu thành công");
                         this.dispose();
                     } else {

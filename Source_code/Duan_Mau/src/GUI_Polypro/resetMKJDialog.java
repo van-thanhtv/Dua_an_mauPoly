@@ -138,8 +138,10 @@ public class resetMKJDialog extends javax.swing.JDialog {
                     try {
                         this.NVDao.resetMK(this.nhanVien, txtMatKhau);    //reset MK nhân viên theo maNV và Email
                         dialogHelper.alert(this, "Cập nhật thành công!");
+                        this.dispose();
                     } catch (Exception e) {
                         dialogHelper.alert(this, "Cập nhật thất bại!");
+                        this.dispose();
                     }
                 }
             }

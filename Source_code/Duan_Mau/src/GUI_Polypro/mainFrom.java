@@ -768,7 +768,7 @@ public class mainFrom extends javax.swing.JFrame {
     private void openWebsite() {
         if (Desktop.isDesktopSupported()) {//Kiểm tra xem lớp này có được hỗ trợ hay ko
             try {
-                File myFile = new File("help/Hệ thống quản lý đào tạo.pdf");
+                File myFile = new File("help/index.pdf");
                 Desktop.getDesktop().open(myFile);
             } catch (IOException ex) {
                 // no application registered for PDFs

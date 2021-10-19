@@ -121,18 +121,32 @@ public class nhanVienDao implements nhanVienInterface{
 
     @Override
     public void resetMK(nhanVien entity,JPasswordField txt) {
-        String sql="UPDATE NhanVien SET MatKhau=? WHERE MaNV=? AND Gmail=?";
+        String sql="UPDATE NhanVien SET MatKhau=? WHERE MaNV=?";
          try {
             jdbcHelper.executeUpdate(sql,                
                 //Nếu vai trò là nhân viên thì thực hiên băm pas 2 chiều còn không thì 1 chiều
                 entity.isVaiTro() ? hashPassHelper.encrypt(txt.getText()):hashPassHelper.Myencrypt(txt.getText().getBytes("UTF-8")),//Nếu vai trò là quản lý thì thực hên băm pass theo "MD5" nếu là nhân viên thì băm pass theo kiểu "AES";
-                entity.getMaNV(),
-                entity.getGmail()                                
+                entity.getMaNV()                                                
                 );
         } catch (Exception e) {
             e.printStackTrace();
             dialogHelper.alert(null,"Lỗi hệ thống!");
         }        
+    }
+
+    @Override
+    public void updatemk(nhanVien entity) {
+        String sql="UPDATE NhanVien SET MatKhau = ? WHERE MaNV=?";
+        try {
+            jdbcHelper.executeUpdate(sql,                
+                //Nếu vai trò là nhân viên thì thực hiên băm pas 2 chiều còn không thì 1 chiều                
+                entity.getMatKhau(),
+                entity.getMaNV()
+                );
+        } catch (Exception e) {
+            e.printStackTrace();
+            dialogHelper.alert(null, "Cập nhập thất bại !");
+        }
     }
     
 }

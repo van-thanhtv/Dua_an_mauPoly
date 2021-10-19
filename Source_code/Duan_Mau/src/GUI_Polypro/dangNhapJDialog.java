@@ -381,6 +381,7 @@ public class dangNhapJDialog extends javax.swing.JDialog {
             if (nhanVien != null) {    //nếu manv đúng                
                 String matKhau2 = nhanVien.getMatKhau();
                 if (nhanVien.isVaiTro()) {
+                    System.out.println("TP");
                     if (hashPassHelper.encrypt(matKhau).equals(matKhau2)) {  //nếu mật khẩu đúng "MD5"
                         shareHelper.USER = nhanVien;
                         dialogHelper.alert(this, "Đăng nhập thành công!");
@@ -389,6 +390,7 @@ public class dangNhapJDialog extends javax.swing.JDialog {
                         dialogHelper.alert(this, "Sai mật khẩu!");
                     }
                 } else {
+                    System.out.println("NV");
                     if (matKhau.equals(hashPassHelper.decrypt(matKhau2))) {  //nếu mật khẩu đúng "AES"
                         shareHelper.USER = nhanVien;
                         dialogHelper.alert(this, "Đăng nhập thành công!");

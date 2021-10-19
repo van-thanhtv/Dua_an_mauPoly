@@ -16,6 +16,7 @@ import model.nhanVien;
 public interface nhanVienInterface {
     public void insert(nhanVien entity);//Thêm mới nhân viên vào CSDL
     public void update(nhanVien entity);//Cập nhật nhân viên vào CSDL
+    public void updatemk(nhanVien entity);//Cập nhật nhân viên vào CSDL
     public void resetMK(nhanVien entity,JPasswordField txt);//Cập nhập mật khẩu cho nv quên MK
     public void delete(String maNV);//Xóa nhân viên trong CSDL
     public ArrayList<nhanVien> select();//Truy vấn danh sách nhân viên
